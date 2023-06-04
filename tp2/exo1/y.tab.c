@@ -69,13 +69,14 @@
 /* First part of user prologue.  */
 #line 1 "exo1.y"
 
+// THIAM - ALMAJJO - DOULKOM
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "lex.yy.c"
 
 
-#line 79 "y.tab.c"
+#line 80 "y.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -551,7 +552,7 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    12,    12,    14,    15
+       0,    13,    13,    15,    16
 };
 #endif
 
@@ -1108,13 +1109,13 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* phrase: SUJET VERBE COMPLEMENT  */
-#line 12 "exo1.y"
+#line 13 "exo1.y"
                                 {printf("La phrase est correcte\n");}
-#line 1114 "y.tab.c"
+#line 1115 "y.tab.c"
     break;
 
 
-#line 1118 "y.tab.c"
+#line 1119 "y.tab.c"
 
       default: break;
     }
@@ -1307,7 +1308,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 17 "exo1.y"
+#line 18 "exo1.y"
 
 
 
@@ -1355,7 +1356,7 @@ int main(void){
     }
 
 
-    printf("phrase :");
+    printf("phrase : ");
     yyparse();
 }
 int yyerror(char *s){     

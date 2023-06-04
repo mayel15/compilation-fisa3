@@ -438,7 +438,8 @@ int yy_flex_debug = 0;
 char *yytext;
 #line 1 "exo1.l"
 #line 2 "exo1.l"
-// THIAM - ALMAJJO - DOULKOM
+// THIAM - ALMAJJO - DOULKOM 
+// version apprentissage avec liste chainée
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -471,8 +472,8 @@ const char *recherche_categorie(const char* mot) {
     return "Inconnu";
 }
 
-#line 475 "lex.yy.c"
 #line 476 "lex.yy.c"
+#line 477 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -689,9 +690,9 @@ YY_DECL
 		}
 
 	{
-#line 37 "exo1.l"
+#line 38 "exo1.l"
 
-#line 695 "lex.yy.c"
+#line 696 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -750,7 +751,7 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 38 "exo1.l"
+#line 39 "exo1.l"
 {  
     yylval = *recherche_categorie(yytext);  
     printf("%s : %s\n", yytext, recherche_categorie(yytext));
@@ -760,19 +761,19 @@ YY_RULE_SETUP
 }
 	YY_BREAK
 case 2:
-#line 46 "exo1.l"
+#line 47 "exo1.l"
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 46 "exo1.l"
+#line 47 "exo1.l"
 ; 
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 47 "exo1.l"
+#line 48 "exo1.l"
 ECHO;
 	YY_BREAK
-#line 776 "lex.yy.c"
+#line 777 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1777,6 +1778,6 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 47 "exo1.l"
+#line 48 "exo1.l"
 
 

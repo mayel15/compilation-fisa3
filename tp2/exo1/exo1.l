@@ -1,5 +1,6 @@
 %{
-// THIAM - ALMAJJO - DOULKOM
+// THIAM - ALMAJJO - DOULKOM 
+// version apprentissage avec liste chainée
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

@@ -62,7 +62,7 @@ int main(void){
     }
 
 
-    printf("phrase :");
+    printf("phrase : ");
     yyparse();
 }
 int yyerror(char *s){     
