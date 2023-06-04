@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
+
 int posSource=0; 
 
 char source[100] ;
@@ -182,6 +184,8 @@ res F()
     return c; 
 }
 
+/*
+// ancienne version de chiffre
 res CHIFFRE()
 {
     res c; 
@@ -258,6 +262,29 @@ res CHIFFRE()
     c.estVrai = 0;
     c.valeur = atoi(&source[posSource]);
     return c;
+}*/
+
+// nouvelle versin de chiffre 
+res CHIFFRE() {
+    res c;
+    c.estVrai = 0;
+    c.valeur = 0;
+    
+    int posLoc = posSource; 
+    
+    // recupere un chiffre ou une suite de chiffre
+    while (isdigit(source[posSource])) {
+        c.valeur = c.valeur * 10 + (source[posSource] - '0');
+        posSource++;
+        c.estVrai = 1;
+    }
+    
+    
+    if (!c.estVrai) {
+        posSource = posLoc; 
+    }
+    
+    return c;
 }
 
 int main()
@@ -271,12 +298,9 @@ int main()
     source[6] = '5';
     source[7] = ')';
     source[8] = '+';
-    source[9] = '4';
-    source[10] = ')';
-
-    //source[5] = ')';
-    //source[8] = '\0';
-    //printf()
+    source[9] = '2';
+    source[10] = '1';
+    source[11] = ')';
 
     res e = E();
     if(e.estVrai)
