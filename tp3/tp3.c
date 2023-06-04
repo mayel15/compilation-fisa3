@@ -10,8 +10,14 @@ char source[100] ;
 
 
 // E -> T+E | T
-// T -> F*T | E
+// T -> F*T | F
 // F -> (E) | CHIFFRE   
+
+// expression ::= term | expression '+' term | expression '-' term
+// term ::= factor | term '*' factor | term '/' factor
+// factor ::= number | '(' expression ')'
+// number ::= [0-9]+
+
 // CHIFFRE -> 1 | 2 | 3 | 4 | 6 | 8 | 9
 
 // A tester : ((2+4*5)+4)
@@ -34,35 +40,52 @@ res CHIFFRE();
 
 res E()
 {
-    int poslLocal = posSource;
-    res c;
-    if(T().estVrai)
-    {
+    int posLocal = posSource;
+    res c, t, e; 
+    t = T();
 
-        calcul += T().valeur;
-        
-        posSource += 1;
-        
+    // cas de l'addition 
+    if(t.estVrai)
+    {
         if(source[posSource]=='+')
         {
             posSource += 1;
-            if(E().estVrai)
+            e = E();
+            if(e.estVrai)
             {
                 c.estVrai = 1;
-                c.valeur = E().valeur;
-                calcul += E().valeur;
+                c.valeur = t.valeur + e.valeur;
                 return c;   
             }
         }       
     }
 
-    posSource = poslLocal;
+    posSource = posLocal;
+    t = T();
+    
+    // cas de la soustraction 
+    if(t.estVrai)
+    {  
+        posSource += 1 ;
+        if(source[posSource]=='-')
+        {
+            posSource += 1;
+            e = E();
+            if(e.estVrai)
+            {
+                c.estVrai = 1;
+                c.valeur = t.valeur - e.valeur;
+                return c;   
+            }
+        }       
+    }
 
-    if(T().estVrai)
+    posSource = posLocal;
+    t = T();
+    if(t.estVrai)
     {
         c.estVrai = 1;
-        c.valeur = T().valeur;
-        calcul += T().valeur;
+        c.valeur = t.valeur;
         return c;
     }
     c.estVrai = 0;
@@ -71,71 +94,87 @@ res E()
 
 res T()
 {
-    int poslLocal = posSource;
-    res c;
-    if(F().estVrai)
+    int posLocal = posSource;
+    res c, f, t;
+    f = F();
+    
+    // cas de la multiplication
+    if(f.estVrai)
     {
-
-        calcul += F().valeur;
-        
-        posSource += 1;
         
         if(source[posSource]=='*')
         {
             posSource += 1;
-            if(T().estVrai)
+            t = T();
+            if(t.estVrai)
             {
                 c.estVrai = 1;
-                c.valeur = T().valeur;
-                calcul *= T().valeur;
+                c.valeur = f.valeur * t.valeur;
                 return c;   
             }
         }       
     }
 
-    posSource = poslLocal;
+    posSource = posLocal; 
+    f =  F();
 
-    if(E().estVrai)
+    // cas de la division 
+    if(f.estVrai)
+    {
+        
+        if(source[posSource]=='/')
+        {
+            posSource += 1;
+            t = T();
+            if(t.estVrai)
+            {
+                c.estVrai = 1;
+                c.valeur = f.valeur / t.valeur;
+                return c;   
+            }
+        }       
+    }
+
+    posSource = posLocal; 
+    f =  F();
+
+    if(f.estVrai)
     {
         c.estVrai = 1;
-        c.valeur = E().valeur;
-        calcul += E().valeur;
+        c.valeur = f.valeur;
         return c;
     }
     c.estVrai = 0;
-    return c; 
+    return c;
 }
 
 res F()
 {
-    int poslLocal = posSource;
-    res c;
+    int posLocal = posSource;
+    res c, e; 
     if(source[posSource]=='(')
     {
-
-        calcul += T().valeur;
-        
         posSource += 1;
-        
-        if(E().estVrai)
+        e = E();
+        if(e.estVrai)
         {
-            posSource += 1;
             if(source[posSource]==')')
             {
+                posSource += 1;
                 c.estVrai = 1;
-                c.valeur = atoi(&source[posSource]);
+                c.valeur = e.valeur;
                 return c;   
             }
         }       
     }
 
-    posSource = poslLocal;
+    posSource = posLocal;
 
-    if(T().estVrai)
+    res C = CHIFFRE();
+    if(C.estVrai)
     {
         c.estVrai = 1;
-        c.valeur = T().valeur;
-        calcul += T().valeur;
+        c.valeur = C.valeur;
         return c;
     }
     c.estVrai = 0;
@@ -149,60 +188,70 @@ res CHIFFRE()
     {
         c.estVrai = 1;
         c.valeur = atoi(&source[posSource]);
+        posSource += 1;
         return c;
     }
     if(source[posSource]=='1')
     {
         c.estVrai = 1;
         c.valeur = atoi(&source[posSource]);
+        posSource += 1;
         return c;
     }
     if(source[posSource]=='2')
     {
         c.estVrai = 1;
         c.valeur = atoi(&source[posSource]);
+        posSource += 1;
         return c;
     }
     if(source[posSource]=='3')
     {
         c.estVrai = 1;
         c.valeur = atoi(&source[posSource]);
+        posSource += 1;
         return c;
     }
     if(source[posSource]=='4')
     {
         c.estVrai = 1;
         c.valeur = atoi(&source[posSource]);
+        posSource += 1;
         return c;
     }
     if(source[posSource]=='5')
     {
         c.estVrai = 1;
         c.valeur = atoi(&source[posSource]);
+        posSource += 1;
         return c;
     }
     if(source[posSource]=='6')
     {
         c.estVrai = 1;
         c.valeur = atoi(&source[posSource]);
+        posSource += 1;
         return c;
     }
     if(source[posSource]=='7')
     {
         c.estVrai = 1;
         c.valeur = atoi(&source[posSource]);
+        posSource += 1;
         return c;
     }
     if(source[posSource]=='8')
     {
         c.estVrai = 1;
         c.valeur = atoi(&source[posSource]);
+        posSource += 1;
         return c;
     }
     if(source[posSource]=='9')
     {
         c.estVrai = 1;
         c.valeur = atoi(&source[posSource]);
+        posSource += 1;
         return c;
     }
     c.estVrai = 0;
@@ -212,16 +261,22 @@ res CHIFFRE()
 
 int main()
 {
-    source[0] = '4';
-    source[1] = '+';
-    source[2] = '3';
-    source[3] = '*';
-    source[4] = '5';
+    source[0] = '(';
+    source[1] = '2';
+    source[2] = '+';
+    source[3] = '3';
+    source[4] = ')';
+    source[5] = '/';
+    source[6] = '5';
+    //source[5] = ')';
+    //source[8] = '\0';
+    //printf()
 
-    if(E().estVrai)
+    res e = E();
+    if(e.estVrai)
     {
         printf("expression correcte\n");
-        printf("%d \n", calcul);
+        printf("%d \n", e.valeur);
     }
     else
     {
