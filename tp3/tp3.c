@@ -7,24 +7,13 @@
 int posSource=0; 
 
 char source[100] ;
-// A -> B+C | B
-// B -> 4 
-// C -> 3
 
-
-// E -> T+E | T
-// T -> F*T | F
-// F -> (E) | CHIFFRE | V 
-// V -> VAR=CHIFFRE  
-
-// expression ::= term | expression '+' term | expression '-' term
-// term ::= factor | term '*' factor | term '/' factor
-// factor ::= number | '(' expression ')'
-// number ::= [0-9]+
-// variable ::= [a-z.A-Z]++ 
-// eprvar ::= variable = CHIFFRE
-
-// CHIFFRE -> 1 | 2 | 3 | 4 | 6 | 8 | 9
+// Grammaire 
+// E -> T+E | T-E | T | V 
+// T -> F*T | F/T | F
+// F -> (E) | CHIFFRE | VAR
+// V -> VAR=E  
+// CHIFFRE -> [0-9]++
 // VAR -> [a-z.A-Z]++ 
 
 // A tester : ((2+4*5)+4)
@@ -38,7 +27,6 @@ typedef struct valeur {
     int valeur;
 } res;
 
-int calcul = 0;
 
 res E();
 res T();
@@ -47,6 +35,7 @@ res CHIFFRE();
 res VAR();
 res V();
 
+// regle : E -> T+E | T-E | T
 res E()
 {
     int posLocal = posSource;
@@ -99,8 +88,23 @@ res E()
     }
     c.estVrai = 0;
     return c; 
+
+    posSource = posLocal;
+    res v = V();
+    printf("ok");
+    if(v.estVrai)
+    {
+        c.estVrai = 1;
+        c.valeur = v.valeur;
+        return c;
+    }
+    printf("ok");
+    c.estVrai = 0;
+    return c; 
 }
 
+
+// regle: T -> F*T | F/T | F
 res T()
 {
     int posLocal = posSource;
@@ -157,6 +161,7 @@ res T()
     return c;
 }
 
+// regle: F -> (E) | CHIFFRE | VAR
 res F()
 {
     int posLocal = posSource;
@@ -190,37 +195,44 @@ res F()
     return c; 
 
     posSource = posLocal;
-
-    res v = V();
+    res v = VAR();
     if(v.estVrai)
     {
         c.estVrai = 1;
-        c.valeur = C.valeur;
+        c.valeur = v.valeur;
         return c;
     }
     c.estVrai = 0;
     return c; 
 }
 
-res VAR()
-{
-    res c; 
-    if(source[posSource]=='a')
-    {
-        c.estVrai = 1;
-        //c.valeur = a;
-        posSource += 1;
-        return c;
-    }
-    c.estVrai = 0;
-    return c;
 
+// regle: VAR -> [a-z.A-Z]++
+res VAR() {
+    res c;
+    c.estVrai = 0;
+    c.valeur = 0;
+    
+    int posLoc = posSource; 
+    
+    // recupere un lettre ou une suite de lettres
+    while (isalpha(source[posSource])) {
+        posSource++;
+        c.estVrai = 1;
+    }
+    
+    
+    if (!c.estVrai) {
+        posSource = posLoc; 
+    }
+    
+    return c;
 }
 
-/// pour l'affectation 
+// regle: V -> VAR=CHIFFRE; pour l'affectation 
 res V(){
     int posLocal = posSource;
-    res c, v, C; 
+    res c, v, e; 
     v = VAR();
     // cas de l'addition 
     if(v.estVrai)
@@ -228,11 +240,11 @@ res V(){
         if(source[posSource]=='=')
         {
             posSource += 1;
-            C = CHIFFRE();
-            if(C.estVrai)
+            e = E();
+            if(e.estVrai)
             {
                 c.estVrai = 1;
-                c.valeur = C.valeur;
+                c.valeur = e.valeur;
                 return c;   
             }
         }       
@@ -241,87 +253,8 @@ res V(){
     return c;
 }
 
-/*
-// ancienne version de chiffre
-res CHIFFRE()
-{
-    res c; 
-    if(source[posSource]=='0')
-    {
-        c.estVrai = 1;
-        c.valeur = atoi(&source[posSource]);
-        posSource += 1;
-        return c;
-    }
-    if(source[posSource]=='1')
-    {
-        c.estVrai = 1;
-        c.valeur = atoi(&source[posSource]);
-        posSource += 1;
-        return c;
-    }
-    if(source[posSource]=='2')
-    {
-        c.estVrai = 1;
-        c.valeur = atoi(&source[posSource]);
-        posSource += 1;
-        return c;
-    }
-    if(source[posSource]=='3')
-    {
-        c.estVrai = 1;
-        c.valeur = atoi(&source[posSource]);
-        posSource += 1;
-        return c;
-    }
-    if(source[posSource]=='4')
-    {
-        c.estVrai = 1;
-        c.valeur = atoi(&source[posSource]);
-        posSource += 1;
-        return c;
-    }
-    if(source[posSource]=='5')
-    {
-        c.estVrai = 1;
-        c.valeur = atoi(&source[posSource]);
-        posSource += 1;
-        return c;
-    }
-    if(source[posSource]=='6')
-    {
-        c.estVrai = 1;
-        c.valeur = atoi(&source[posSource]);
-        posSource += 1;
-        return c;
-    }
-    if(source[posSource]=='7')
-    {
-        c.estVrai = 1;
-        c.valeur = atoi(&source[posSource]);
-        posSource += 1;
-        return c;
-    }
-    if(source[posSource]=='8')
-    {
-        c.estVrai = 1;
-        c.valeur = atoi(&source[posSource]);
-        posSource += 1;
-        return c;
-    }
-    if(source[posSource]=='9')
-    {
-        c.estVrai = 1;
-        c.valeur = atoi(&source[posSource]);
-        posSource += 1;
-        return c;
-    }
-    c.estVrai = 0;
-    c.valeur = atoi(&source[posSource]);
-    return c;
-}*/
-
-// nouvelle versin de chiffre 
+// nouvelle version de chiffre 
+// regle: CHIFFRE -> [0-9]++
 res CHIFFRE() {
     res c;
     c.estVrai = 0;
@@ -346,11 +279,11 @@ res CHIFFRE() {
 
 int main()
 {
-    source[0] = 'a';
-    source[1] = '=';
-    source[2] = '4';
-
-    /*source[1] = '(';
+    // pour faire le test d'une version, il faut commenter l'un et decommenter l'autre
+    
+    // version 1&2: test pour analyse syntaxique et evaluation
+    source[0] = '(';
+    source[1] = '(';
     source[2] = '2';
     source[3] = '+';
     source[4] = '4';
@@ -360,18 +293,43 @@ int main()
     source[8] = '+';
     source[9] = '2';
     source[10] = '1';
-    source[11] = ')';*/
+    source[11] = ')';
 
-    //res e = E();
-    res v = V();
-    if(v.estVrai)
+    // pour tester les expression arithmetiques, on appelle l'axiome E
+    res e = E();
+    if(e.estVrai)
     {
         printf("expression correcte\n");
-        printf("resultat = %d \n", v.valeur);
+        printf("resultat = %d \n", e.valeur);
     }
     else
     {
         printf("expression incorrecte\n");
-    } 
+    }
+
+    
+    
+    // version 3: test de l'affectation avec des variables
+    /*source[0] = 'x';
+    source[1] = '=';
+    source[2] = '5';
+    source[3] = '+';
+    source[4] = '(';
+    source[5] = '3';
+    source[6] = '*';
+    source[7] = '5';
+    source[8] = ')';
+    
+    // pour tester l'affectation, on utilise V
+    res v = V();
+    if(v.estVrai)
+    {
+        printf("expression correcte\n");
+        printf("variable = %d \n", v.valeur);
+    }
+    else
+    {
+        printf("expression incorrecte\n");
+    }*/
 
 }
