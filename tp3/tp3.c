@@ -14,14 +14,18 @@ char source[100] ;
 
 // E -> T+E | T
 // T -> F*T | F
-// F -> (E) | CHIFFRE   
+// F -> (E) | CHIFFRE | V 
+// V -> VAR=CHIFFRE  
 
 // expression ::= term | expression '+' term | expression '-' term
 // term ::= factor | term '*' factor | term '/' factor
 // factor ::= number | '(' expression ')'
 // number ::= [0-9]+
+// variable ::= [a-z.A-Z]++ 
+// eprvar ::= variable = CHIFFRE
 
 // CHIFFRE -> 1 | 2 | 3 | 4 | 6 | 8 | 9
+// VAR -> [a-z.A-Z]++ 
 
 // A tester : ((2+4*5)+4)
 
@@ -40,6 +44,8 @@ res E();
 res T();
 res F();
 res CHIFFRE();
+res VAR();
+res V();
 
 res E()
 {
@@ -182,6 +188,57 @@ res F()
     }
     c.estVrai = 0;
     return c; 
+
+    posSource = posLocal;
+
+    res v = V();
+    if(v.estVrai)
+    {
+        c.estVrai = 1;
+        c.valeur = C.valeur;
+        return c;
+    }
+    c.estVrai = 0;
+    return c; 
+}
+
+res VAR()
+{
+    res c; 
+    if(source[posSource]=='a')
+    {
+        c.estVrai = 1;
+        //c.valeur = a;
+        posSource += 1;
+        return c;
+    }
+    c.estVrai = 0;
+    return c;
+
+}
+
+/// pour l'affectation 
+res V(){
+    int posLocal = posSource;
+    res c, v, C; 
+    v = VAR();
+    // cas de l'addition 
+    if(v.estVrai)
+    {
+        if(source[posSource]=='=')
+        {
+            posSource += 1;
+            C = CHIFFRE();
+            if(C.estVrai)
+            {
+                c.estVrai = 1;
+                c.valeur = C.valeur;
+                return c;   
+            }
+        }       
+    }
+    c.estVrai = 0;
+    return c;
 }
 
 /*
@@ -289,8 +346,11 @@ res CHIFFRE() {
 
 int main()
 {
-    source[0] = '(';
-    source[1] = '(';
+    source[0] = 'a';
+    source[1] = '=';
+    source[2] = '4';
+
+    /*source[1] = '(';
     source[2] = '2';
     source[3] = '+';
     source[4] = '4';
@@ -300,13 +360,14 @@ int main()
     source[8] = '+';
     source[9] = '2';
     source[10] = '1';
-    source[11] = ')';
+    source[11] = ')';*/
 
-    res e = E();
-    if(e.estVrai)
+    //res e = E();
+    res v = V();
+    if(v.estVrai)
     {
         printf("expression correcte\n");
-        printf("resultat = %d \n", e.valeur);
+        printf("resultat = %d \n", v.valeur);
     }
     else
     {
