@@ -1,4 +1,5 @@
 %{
+// THIAM - ALMAJJO - DOULKOM
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -9,7 +10,7 @@
 %token SUJET VERBE ADJECTIF ADVERBE
 %start phrase
 %%
-phrase: SUJET VERBE COMPLEMENT  {printf("La phrase est correcte\n"); return;}
+phrase: SUJET VERBE COMPLEMENT  {printf("La phrase est correcte\n");}
 ; 
 COMPLEMENT: ADJECTIF
 | ADVERBE

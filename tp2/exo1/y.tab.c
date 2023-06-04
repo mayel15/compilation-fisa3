@@ -1359,5 +1359,5 @@ int main(void){
     yyparse();
 }
 int yyerror(char *s){     
-    printf("invalid expression");   
+    printf("expression invalide\n");   
 }
