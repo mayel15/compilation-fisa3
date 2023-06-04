@@ -263,12 +263,17 @@ res CHIFFRE()
 int main()
 {
     source[0] = '(';
-    source[1] = '2';
-    source[2] = '+';
-    source[3] = '3';
-    source[4] = ')';
-    source[5] = '/';
-    source[6] = '6';
+    source[1] = '(';
+    source[2] = '2';
+    source[3] = '+';
+    source[4] = '4';
+    source[5] = '*';
+    source[6] = '5';
+    source[7] = ')';
+    source[8] = '+';
+    source[9] = '4';
+    source[10] = ')';
+
     //source[5] = ')';
     //source[8] = '\0';
     //printf()
@@ -277,7 +282,7 @@ int main()
     if(e.estVrai)
     {
         printf("expression correcte\n");
-        printf("%d \n", e.valeur);
+        printf("resultat = %d \n", e.valeur);
     }
     else
     {
