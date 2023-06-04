@@ -1,3 +1,4 @@
+// THIAM - ALMAJJO - DOULKOM
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -118,7 +119,7 @@ res T()
     posSource = posLocal; 
     f =  F();
 
-    // cas de la division 
+    // cas de la division, c'est une divion entiere car ça prend car la valuer est un int
     if(f.estVrai)
     {
         
@@ -267,7 +268,7 @@ int main()
     source[3] = '3';
     source[4] = ')';
     source[5] = '/';
-    source[6] = '5';
+    source[6] = '6';
     //source[5] = ')';
     //source[8] = '\0';
     //printf()
